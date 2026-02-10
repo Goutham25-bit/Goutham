@@ -1,67 +1,240 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Portfolio</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* ===============================
+   Base Reset
+================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  <header>
-    <h1>Hi I am Goutham </h1>
-    <p>BCA Student | Aspiring Software Developer</p>
-  </header>
+/* ===============================
+   Design Tokens
+================================ */
+:root {
+  --bg: #0f172a;
+  --surface: #111827;
+  --surface-soft: #1f2937;
+  --primary: #2dd4bf;
+  --accent: #38bdf8;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --radius: 18px;
+  --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
+  --shadow-strong: 0 25px 60px rgba(0,0,0,0.45);
+}
 
-  <section>
-    <h2>About Me</h2>
-    <p>
-      My goal is to put my BCA education to good use by learning programming
-      and practical development skills.
-    </p>
-  </section>
+/* ===============================
+   Body
+================================ */
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #020617, var(--bg) 60%);
+  color: var(--text-main);
+  line-height: 1.6;
+}
 
-  <section>
-    <h2>Skills</h2>
-    <p>HTML, CSS, JavaScript, Basics of Node.js</p>
-  </section>
+/* ===============================
+   Header / Hero
+================================ */
+header {
+  min-height: 65vh;
+  padding: 80px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(45,212,191,0.25), transparent),
+    linear-gradient(180deg, #020617, #020617);
+  position: relative;
+  overflow: hidden;
+}
 
-  <section>
-    <h2>Contact Me</h2>
+header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 55%);
+}
 
-    <form id="contactForm">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Send</button>
-    </form>
-<p id="status" style="color: green; font-weight: bold;"></p>
-  </section>
+/* Main Title */
+header h1 {
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  z-index: 1;
+}
 
-  <footer>
-    <p>© 2026 My Portfolio</p>
-  </footer>
+/* ✅ Subtitle (BCA Student) */
+header p,
+header h3,
+header span {
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 1;
+}
 
-  <script>
-  const form = document.getElementById("contactForm");
-  const status = document.getElementById("status");
+/* Accent underline for subtitle */
+header p::after,
+header h3::after,
+header span::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // stop page reload
+/* ===============================
+   Sections
+================================ */
+section {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 60px 32px;
+  position: relative;
+  animation: fadeUp 0.6s ease both;
+}
 
-    const formData = new FormData(form);
+/* Auto Card Design (Contact + main sections) */
+section:has(form),
+section:nth-of-type(-n+2) {
+  background: linear-gradient(180deg, var(--surface), var(--surface-soft));
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
 
-    const res = await fetch("/submit", {
-      method: "POST",
-      body: formData
-    });
+section:has(form):hover,
+section:nth-of-type(-n+2):hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-strong);
+}
 
-    const text = await res.text();
+section:has(form)::before,
+section:nth-of-type(-n+2)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(45,212,191,0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
 
-    status.textContent = text;
-    status.style.color = res.ok ? "green" : "red";
+section:has(form):hover::before,
+section:nth-of-type(-n+2):hover::before {
+  opacity: 1;
+}
 
-    if (res.ok) form.reset();
-  });
-</script>
-</body>
-</html>
+/* ===============================
+   Section Titles
+================================ */
+section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+  position: relative;
+}
+
+section h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 46px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+/* ===============================
+   Forms
+================================ */
+form {
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius);
+  padding: 36px;
+  border: 1px solid var(--border);
+}
+
+form label {
+  display: block;
+  margin-top: 22px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+form input,
+form textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+form input:focus,
+form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(45,212,191,0.25);
+}
+
+/* ===============================
+   Button
+================================ */
+button {
+  margin-top: 32px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #020617;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border: none;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(45,212,191,0.45);
+}
+
+/* ===============================
+   Footer
+================================ */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ===============================
+   Animation
+================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
