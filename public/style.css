@@ -1,168 +1,67 @@
-/* ===============================
-   Base Reset
-================================ */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-/* ===============================
-   Design Tokens
-================================ */
-:root {
-  --bg: #0f172a;              /* slate-900 */
-  --surface: #111827;         /* dark card */
-  --surface-soft: #1f2937;    /* lighter card */
-  --primary: #2dd4bf;         /* teal */
-  --primary-dark: #14b8a6;
-  --accent: #38bdf8;          /* sky */
-  --text-main: #e5e7eb;
-  --text-muted: #9ca3af;
-  --border: rgba(255,255,255,0.08);
-  --radius: 18px;
-  --shadow-soft: 0 10px 30px rgba(0,0,0,0.35);
-  --shadow-strong: 0 25px 60px rgba(0,0,0,0.45);
-}
+  <header>
+    <h1>Hi I am Goutham </h1>
+    <p>BCA Student | Aspiring Software Developer</p>
+  </header>
 
-/* ===============================
-   Body
-================================ */
-body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(
-    circle at top,
-    #020617,
-    var(--bg) 60%
-  );
-  color: var(--text-main);
-  line-height: 1.6;
-}
+  <section>
+    <h2>About Me</h2>
+    <p>
+      My goal is to put my BCA education to good use by learning programming
+      and practical development skills.
+    </p>
+  </section>
 
-/* ===============================
-   Header / Hero
-================================ */
-header {
-  min-height: 65vh;
-  padding: 80px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background:
-    linear-gradient(135deg, rgba(45,212,191,0.25), transparent),
-    linear-gradient(180deg, #020617, #020617);
-  position: relative;
-  overflow: hidden;
-}
+  <section>
+    <h2>Skills</h2>
+    <p>HTML, CSS, JavaScript, Basics of Node.js</p>
+  </section>
 
-header::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 55%);
-}
+  <section>
+    <h2>Contact Me</h2>
 
-header h1 {
-  font-size: clamp(2.4rem, 5vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  z-index: 1;
-}
+    <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send</button>
+    </form>
+<p id="status" style="color: green; font-weight: bold;"></p>
+  </section>
 
-/* ===============================
-   Sections
-================================ */
-section {
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 60px 32px;
-  position: relative;
-}
+  <footer>
+    <p>© 2026 My Portfolio</p>
+  </footer>
 
-/* Card Sections */
-.section-card {
-  background: linear-gradient(
-    180deg,
-    var(--surface),
-    var(--surface-soft)
-  );
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
+  <script>
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("status");
 
-.section-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-strong);
-}
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // stop page reload
 
-/* Subtle Glow */
-.section-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(45,212,191,0.15),
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
+    const formData = new FormData(form);
 
-.section-card:hover::before {
-  opacity: 1;
-}
+    const res = await fetch("/submit", {
+      method: "POST",
+      body: formData
+    });
 
-/* ===============================
-   Section Titles
-================================ */
-section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  font-weight: 700;
-  position: relative;
-}
+    const text = await res.text();
 
-section h2::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -10px;
-  width: 46px;
-  height: 4px;
-  border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--primary),
-    var(--accent)
-  );
-}
+    status.textContent = text;
+    status.style.color = res.ok ? "green" : "red";
 
-/* ===============================
-   Forms
-================================ */
-form {
-  background: rgba(255,255,255,0.02);
-  border-radius: var(--radius);
-  padding: 36px;
-  border: 1px solid var(--border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-form:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-soft);
-}
-
-form label {
-  display: block;
-  margin-top: 22px;
-  font-si
+    if (res.ok) form.reset();
+  });
+</script>
+</body>
+</html>
